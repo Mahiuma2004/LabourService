@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Village Labour Service</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #0465f6, #010307);
+      background-attachment: fixed;
+    }
+    .section {
+      display: none;
+      padding: 20px;
+      text-align: center;
+    }
+    .active {
+      display: block;
+    }
+    h1, h2 {
+      color: #f5fd01;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .card {
+      background: #07ee2acc;
+      border-radius: 15px;
+      width: 200px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      background: #e0f7fa;
+    }
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+    .card h3 {
+      margin: 10px;
+      font-size: 1.1rem;
+      color: #0a0a09;
+    }
+    .details img {
+      max-width: 250px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .btn {
+      background: #00796b;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #3704ee;
+    }
+    p {
+      color: #f6efef;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Welcome Page -->
+  <div class="section active" id="homePage">
+    <h1>Welcome to Village Labour Hiring</h1>
+    <h2>Select Your Worker Below</h2>
+    <div class="grid" id="workerGrid"></div>
+  </div>
+
+  <!-- Details Page -->
+  <div class="section" id="detailsPage">
+    <h2 id="detailName"></h2>
+    <div class="details">
+      <img id="detailImg" />
+      <p id="detailWork"></p>
+      <p id="detailCost"></p>
+      <button class="btn" onclick="goToPayment()">Proceed to Payment</button>
+      <button class="btn" onclick="goToHome()">Back to Home</button>
+    </div>
+  </div>
+
+  <!-- Payment Page -->
+  <div class="section" id="paymentPage">
+    <h2>Payment</h2>
+    <p>Pay Amount: <strong id="paymentCost"></strong></p>
+    <button class="btn" onclick="goToThankYou()">Make Payment</button>
+    <button class="btn" onclick="goToHome()">Cancel</button>
+  </div>
+
+  <!-- Thank You Page -->
+  <div class="section" id="thankyouPage">
+    <h2>Thank You for Booking!</h2>
+    <p>Your selected worker will contact you soon.</p>
+    <button class="btn" onclick="goToHome()">Return to Home</button>
+  </div>
+
+  <script>
+    const workers = [
+      {name: "Ramu - Mason", img: "labour1.jpg", work: "Expert in house construction and bricks.", cost: "₹500/day"},
+      {name: "Shivamma - Carpenter", img: "labour2.jpg", work: "Doors, windows, furniture making.", cost: "₹600/day"},
+      {name: "Balu - Electrician", img: "labour3.jpg", work: "Wiring, fans, lights, switches.", cost: "₹550/day"},
+      {name: "Kirani - Home Maid", img: "labour4.jpg", work: "Wall painting, polish, putty work.", cost: "₹500/day"},
+      {name: "Raju - Plumber", img: "labour5.jpg", work: "Water pipes, taps, tank repair.", cost: "₹650/day"},
+      {name: "Gopi - Welder", img: "labour6.jpg", work: "Iron grills, gates, welding work.", cost: "₹700/day"},
+      {name: "Soma - Labour Helper", img: "labour7.jpg", work: "General lifting and support.", cost: "₹400/day"},
+      {name: "Naresh - Gardener", img: "labour8.jpg", work: "Garden cleaning, planting.", cost: "₹450/day"},
+      {name: "Vinodini - Tile Worker", img: "labour9.jpg", work: "Lays floor/wall tiles neatly.", cost: "₹600/day"},
+      {name: "Chittamma - Loader", img: "labour10.jpg", work: "Lifting and transport of goods.", cost: "₹500/day"},
+    ];
+
+    let selectedWorker = {};
+
+    const workerGrid = document.getElementById('workerGrid');
+
+    workers.forEach((w, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<img src="${w.img}" alt="${w.name}"/><h3>${w.name}</h3>`;
+      card.onclick = () => showDetails(i);
+      workerGrid.appendChild(card);
+    });
+
+    function showPage(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function showDetails(index) {
+      selectedWorker = workers[index];
+      document.getElementById('detailName').textContent = selectedWorker.name;
+      document.getElementById('detailImg').src = selectedWorker.img;
+      document.getElementById('detailWork').textContent = selectedWorker.work;
+      document.getElementById('detailCost').textContent = "Wage: " + selectedWorker.cost;
+      showPage('detailsPage');
+    }
+
+    function goToPayment() {
+      document.getElementById('paymentCost').textContent = selectedWorker.cost;
+      showPage('paymentPage');
+    }
+
+    function goToThankYou() {
+      showPage('thankyouPage');
+    }
+
+    function goToHome() {
+      showPage('homePage');
+    }
+  </script>
+
+</body>
+</html>
